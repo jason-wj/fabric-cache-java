@@ -1,0 +1,51 @@
+version: '2.1'
+
+networks:
+  basic:
+
+services:
+  # 全局-nosql数据库mongodb
+  fabric-mongo:
+    image: mongo
+    container_name: ${IMAGE_CONTAINER_MONGO}
+    volumes:
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_MONGO}/db:/data/db
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_MONGO}/conf:/data/configdb
+    command: --wiredTigerCacheSizeGB 3
+    ports:
+      - 9091:27017
+    #mem_limit: 1500M
+    networks:
+      - basic
+
+  #  全局-关系型数据库mysql
+  fabric-mysql:
+    image: mysql:5.7
+    container_name: ${IMAGE_CONTAINER_MYSQL}
+    volumes:
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_MYSQL}/data:/var/lib/mysql
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_MYSQL}/conf:/etc/mysql/conf.d
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_MYSQL}/init:/docker-entrypoint-initdb.d/
+    command:
+      --lower_case_table_names=1
+    environment:
+      - MYSQL_ROOT_PASSWORD=ll#20191113
+      - TZ=Asia/Shanghai
+    ports:
+      - 9906:3306
+    networks:
+      - basic
+
+  #  全局-缓存 redis
+  fabric-redis:
+    image: redis
+    container_name: ${IMAGE_CONTAINER_REDIS}
+    volumes:
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_REDIS}/conf/redis.conf:/etc/redis/redis.conf:rw
+      - $RUN_PATH/data-server/${IMAGE_CONTAINER_REDIS}/data:/data:rw
+    ports:
+      - 6379:6379
+    networks:
+      - basic
+    command:
+      redis-server /etc/redis/redis.conf --appendonly yes  --requirepass 123456
