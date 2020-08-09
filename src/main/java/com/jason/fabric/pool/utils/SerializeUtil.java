@@ -8,8 +8,9 @@ import java.io.ObjectOutputStream;
 
 public class SerializeUtil {
     /**
-     *
      * 序列化
+     * @param obj obj
+     * @return 序列化
      */
     public static byte[] serialize(Object obj) {
 
@@ -32,11 +33,9 @@ public class SerializeUtil {
     }
 
     /**
-     *
      * 反序列化
-     *
-     * @param bytes
-     * @return
+     * @param bytes bytes
+     * @return result
      */
     public static Object unSerialize(byte[] bytes) {
 

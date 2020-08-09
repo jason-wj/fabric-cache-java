@@ -22,7 +22,10 @@ public class FabricContractConnectCacheProxyImpl implements InvocationHandler {
 
     /**
      * 生成缓存key
-     * @return
+     * @param userName userName
+     * @param channelName channelName
+     * @param chainCodeName chainCodeName
+     * @return 返回生成的key
      */
     public String genericKey(String userName,String channelName,String chainCodeName){
         return userName.concat(channelName).concat(chainCodeName);

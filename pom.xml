@@ -5,13 +5,50 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.fabric</groupId>
+    <groupId>io.github.jason-wj</groupId>
     <artifactId>fabric-cache-java</artifactId>
     <version>1.0</version>
+    <name>fabric-cache-java</name>
+    <description>A layer of cache for fabric-gateway-java</description>
+    <url>https://github.com/jason-wj/fabric-cache-java</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <licenses>
+        <license>
+            <name> Apache 2 </name>
+            <url>http://www.clf.com/LICENSE-2.0.txt </url>
+            <distribution> repo </distribution>
+            <comments> Abusiness-friendly OSS license </comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Jason-wj</name>
+            <email>idea_wj@163.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+    <scm>
+        <url>https://github.com/jason-wj/fabric-cache-java</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>snapshots</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -45,61 +82,74 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <version>3.8.1</version>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
-            <!-- 编译跳过test -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
                 <configuration>
-                    <skip>true</skip>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-            <!-- 编译带上源码 -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.0</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
-                        <phase>process-resources</phase>
+                        <phase>package</phase>
                         <goals>
-                            <goal>copy-resources</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/java</directory>
-                                    <includes>
-                                        <include>**/*.java</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- 使用assembly:assembly可打包依赖 -->
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
                 <configuration>
-                    <!--这部分可有可无,加上的话则直接生成可运行jar包-->
-                    <!--<archive>-->
-                    <!--<manifest>-->
-                    <!--<mainClass>${exec.mainClass}</mainClass>-->
-                    <!--</manifest>-->
-                    <!--</archive>-->
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <outputEncoding>UTF-8</outputEncoding>
                 </configuration>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <!-- 必须和配置中的gpg校验id一致 -->
+                        <id>gpg</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

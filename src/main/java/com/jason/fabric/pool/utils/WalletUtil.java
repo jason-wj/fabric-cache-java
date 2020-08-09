@@ -20,13 +20,14 @@ public final class WalletUtil {
 
     /**
      * 通过字符串将用户钱包加入
-     * @param walletName
-     * @param mspId
-     * @param certificate
-     * @param privateKey
-     * @throws IOException
-     * @throws CertificateException
-     * @throws InvalidKeyException
+     * @param walletName walletName
+     * @param mspId mspId
+     * @param certificate certificate
+     * @param privateKey privateKey
+     * @return 返回结果
+     * @throws IOException IOException
+     * @throws CertificateException CertificateException
+     * @throws InvalidKeyException InvalidKeyException
      */
     public Identity putWallet(String walletName,String mspId,String certificate, String privateKey) throws IOException, CertificateException, InvalidKeyException {
         X509Credentials credentials = new X509Credentials(certificate, privateKey);
@@ -39,13 +40,14 @@ public final class WalletUtil {
 
     /**
      * 通过路径将用户密钥等加入钱包
-     * @param walletName
-     * @param mspId
-     * @param certificatePath
-     * @param privateKeyPath
-     * @throws IOException
-     * @throws CertificateException
-     * @throws InvalidKeyException
+     * @param walletName walletName
+     * @param mspId mspId
+     * @param certificatePath certificatePath
+     * @param privateKeyPath privateKeyPath
+     * @return 生成钱包
+     * @throws IOException IOException
+     * @throws CertificateException CertificateException
+     * @throws InvalidKeyException InvalidKeyException
      */
     public Identity putWallet(String walletName,String mspId,Path certificatePath, Path privateKeyPath) throws IOException, CertificateException, InvalidKeyException {
         X509Credentials credentials = new X509Credentials(certificatePath, privateKeyPath);
@@ -57,12 +59,12 @@ public final class WalletUtil {
     }
 
     /**
-     * 获取当前钱包用户
-     * @param walletName 钱包名
-     * @return
-     * @throws IOException
-     * @throws CertificateException
-     * @throws InvalidKeyException
+     * 生成钱包
+     * @param walletName walletName
+     * @return 返回生成结果
+     * @throws IOException IOException
+     * @throws CertificateException CertificateException
+     * @throws InvalidKeyException InvalidKeyException
      */
     public Identity getWallet(String walletName) throws IOException, CertificateException, InvalidKeyException {
         Path walletDirectory = Paths.get(Global.getInstance().getWalletDirPath());
